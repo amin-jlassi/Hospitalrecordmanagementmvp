@@ -8,6 +8,7 @@ import { ArrowLeft, Plus, Calendar, Building2, FileText, User, Hospital, Message
 import { Patient, MedicalRecord } from '../data/mockData';
 import { AddRecordForm } from './AddRecordForm';
 import { ChatBot } from './ChatBot';
+import { MedicalAttachments } from './MedicalAttachments';
 
 interface PatientRecordsProps {
   patient: Patient;
@@ -128,9 +129,17 @@ export const PatientRecords: React.FC<PatientRecordsProps> = ({
                   <CardDescription className="mt-1">{record.diagnosis}</CardDescription>
                 </CardHeader>
                 <Separator />
-                <CardContent className="pt-4">
-                  <p className="text-sm text-gray-600 mb-1">{t('notes')}:</p>
-                  <p className="text-sm">{record.notes}</p>
+                <CardContent className="pt-4 space-y-4">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">{t('notes')}:</p>
+                    <p className="text-sm">{record.notes}</p>
+                  </div>
+                  {record.attachments && record.attachments.length > 0 && (
+                    <>
+                      <Separator />
+                      <MedicalAttachments attachments={record.attachments} />
+                    </>
+                  )}
                 </CardContent>
               </Card>
             ))}

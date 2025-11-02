@@ -251,6 +251,52 @@ export const translations: Translations = {
     fr: "Déconnexion",
     ar: "تسجيل خروج",
   },
+  
+  // Attachments
+  attachments: {
+    fr: "Pièces jointes",
+    ar: "المرفقات",
+  },
+  viewAttachment: {
+    fr: "Voir",
+    ar: "عرض",
+  },
+  downloadAttachment: {
+    fr: "Télécharger",
+    ar: "تحميل",
+  },
+  noAttachments: {
+    fr: "Aucune pièce jointe",
+    ar: "لا توجد مرفقات",
+  },
+  attachmentTypes: {
+    fr: "Types de fichiers",
+    ar: "أنواع الملفات",
+  },
+  xrayLabel: {
+    fr: "Radiographie",
+    ar: "أشعة سينية",
+  },
+  scanLabel: {
+    fr: "Échographie",
+    ar: "تصوير بالموجات فوق الصوتية",
+  },
+  labLabel: {
+    fr: "Analyses",
+    ar: "تحليلات",
+  },
+  ecgLabel: {
+    fr: "ECG",
+    ar: "تخطيط القلب",
+  },
+  documentLabel: {
+    fr: "Document",
+    ar: "مستند",
+  },
+  prescriptionLabel: {
+    fr: "Ordonnance",
+    ar: "وصفة طبية",
+  },
 };
 
 interface LanguageContextType {
