@@ -5,11 +5,12 @@ import { RoleSelection } from './components/RoleSelection';
 import { PatientLogin } from './components/PatientLogin';
 import { CINSearch } from './components/CINSearch';
 import { PatientRecords } from './components/PatientRecords';
+import { ChatBot } from './components/ChatBot';
 import { mockPatients, Patient, MedicalRecord } from './data/mockData';
 import { Toaster } from './components/ui/sonner';
 
 type UserRole = 'doctor' | 'patient' | null;
-type AppView = 'roleSelection' | 'patientLogin' | 'doctorSearch' | 'patientRecords';
+type AppView = 'roleSelection' | 'patientLogin' | 'doctorSearch' | 'patientRecords' | 'chatbot';
 
 export default function App() {
   const [patients, setPatients] = useState<Patient[]>(mockPatients);
@@ -61,6 +62,14 @@ export default function App() {
     }
   };
 
+  const handleNavigateToChatbot = () => {
+    setCurrentView('chatbot');
+  };
+
+  const handleBackFromChatbot = () => {
+    setCurrentView('patientRecords');
+  };
+
   return (
     <LanguageProvider>
       <div className="min-h-screen bg-gray-50">
@@ -94,6 +103,14 @@ export default function App() {
             onBack={handleBack}
             onUpdateRecords={handleUpdateRecords}
             userRole={userRole}
+            onNavigateToChatbot={handleNavigateToChatbot}
+          />
+        )}
+
+        {currentView === 'chatbot' && selectedPatient && (
+          <ChatBot
+            patientName={selectedPatient.name}
+            onBack={handleBackFromChatbot}
           />
         )}
 

@@ -3,10 +3,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useLanguage } from "../contexts/LanguageContext";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { ScrollArea } from "./ui/scroll-area";
 import { Alert, AlertDescription } from "./ui/alert";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import { Bot, Send, User, AlertCircle } from "lucide-react";
+import { Bot, Send, User, AlertCircle, ArrowLeft } from "lucide-react";
 
 interface Message {
   id: string;
@@ -16,14 +14,13 @@ interface Message {
 }
 
 interface ChatBotProps {
-  open: boolean;
-  onClose: () => void;
   patientName: string;
+  onBack: () => void;
 }
 
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
-export const ChatBot: React.FC<ChatBotProps> = ({ open, onClose }) => {
+export const ChatBot: React.FC<ChatBotProps> = ({ patientName, onBack }) => {
   const { language, t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -31,7 +28,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ open, onClose }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (open && messages.length === 0) {
+    if (messages.length === 0) {
       setMessages([
         {
           id: "1",
@@ -41,7 +38,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ open, onClose }) => {
         },
       ]);
     }
-  }, [open, t, messages.length]);
+  }, [t]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -102,22 +99,26 @@ export const ChatBot: React.FC<ChatBotProps> = ({ open, onClose }) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      {/* ✅ Scrollable dialog layout */}
-      <DialogContent
-        className="flex flex-col w-full max-w-2xl max-h-[90vh] overflow-hidden p-0"
-        dir={language === "ar" ? "rtl" : "ltr"}
-      >
+    <div className="min-h-[calc(100vh-80px)] bg-gray-50" dir={language === "ar" ? "rtl" : "ltr"}>
+      <div className="max-w-4xl mx-auto p-4 flex flex-col h-[calc(100vh-80px)]">
         {/* Fixed header */}
-        <DialogHeader className="px-6 py-4 border-b shrink-0">
-          <DialogTitle className="flex items-center gap-2">
-            <Bot className="w-5 h-5 text-blue-600" />
-            {t("chatbotTitle")}
-          </DialogTitle>
-        </DialogHeader>
+        <div className="flex items-center justify-between px-6 py-4 border-b bg-white rounded-t-lg shrink-0">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" onClick={onBack} className="mr-2">
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <div className="flex items-center gap-2">
+              <Bot className="w-5 h-5 text-blue-600" />
+              <h2 className="text-lg font-semibold">{t("chatbotTitle")}</h2>
+            </div>
+          </div>
+        </div>
 
         {/* Scrollable middle content */}
-        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4" ref={scrollRef}>
+        <div 
+          className="flex-1 min-h-0 overflow-y-auto px-6 py-4 space-y-4 bg-white" 
+          ref={scrollRef}
+        >
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription className="text-xs">
@@ -179,7 +180,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ open, onClose }) => {
         </div>
 
         {/* Fixed footer */}
-        <div className="px-6 py-4 border-t bg-white shrink-0">
+        <div className="px-6 py-4 border-t bg-white rounded-b-lg shrink-0">
           <div className="flex gap-2">
             <Input
               value={inputValue}
@@ -194,7 +195,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ open, onClose }) => {
             </Button>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };

@@ -7,7 +7,6 @@ import { Separator } from './ui/separator';
 import { ArrowLeft, Plus, Calendar, Building2, FileText, User, Hospital, MessageCircle } from 'lucide-react';
 import { Patient, MedicalRecord } from '../data/mockData';
 import { AddRecordForm } from './AddRecordForm';
-import { ChatBot } from './ChatBot';
 import { MedicalAttachments } from './MedicalAttachments';
 
 interface PatientRecordsProps {
@@ -15,6 +14,7 @@ interface PatientRecordsProps {
   onBack: () => void;
   onUpdateRecords: (records: MedicalRecord[]) => void;
   userRole: 'doctor' | 'patient';
+  onNavigateToChatbot?: () => void;
 }
 
 export const PatientRecords: React.FC<PatientRecordsProps> = ({
@@ -22,10 +22,10 @@ export const PatientRecords: React.FC<PatientRecordsProps> = ({
   onBack,
   onUpdateRecords,
   userRole,
+  onNavigateToChatbot,
 }) => {
   const { language, t } = useLanguage();
   const [showAddForm, setShowAddForm] = useState(false);
-  const [showChatBot, setShowChatBot] = useState(false);
   const [records, setRecords] = useState<MedicalRecord[]>(patient.records);
 
   const handleAddRecord = (newRecord: Omit<MedicalRecord, 'id'>) => {
@@ -86,8 +86,8 @@ export const PatientRecords: React.FC<PatientRecordsProps> = ({
             <Badge variant="secondary">{records.length}</Badge>
           </h2>
           <div className="flex gap-2">
-            {userRole === 'patient' && (
-              <Button onClick={() => setShowChatBot(true)} variant="outline">
+            {userRole === 'patient' && onNavigateToChatbot && (
+              <Button onClick={onNavigateToChatbot} variant="outline">
                 <MessageCircle className="w-4 h-4 mr-2" />
                 {t('chatbotButton')}
               </Button>
@@ -152,14 +152,6 @@ export const PatientRecords: React.FC<PatientRecordsProps> = ({
           open={showAddForm}
           onClose={() => setShowAddForm(false)}
           onAdd={handleAddRecord}
-        />
-      )}
-
-      {userRole === 'patient' && (
-        <ChatBot
-          open={showChatBot}
-          onClose={() => setShowChatBot(false)}
-          patientName={patient.name}
         />
       )}
     </div>
