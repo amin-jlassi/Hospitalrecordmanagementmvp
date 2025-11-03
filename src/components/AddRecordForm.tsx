@@ -20,7 +20,7 @@ import {
 } from "./ui/dialog";
 import { Badge } from "./ui/badge";
 import { MedicalRecord, MedicalAttachment } from "../data/mockData";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { Plus, X } from "lucide-react";
 
 interface AddRecordFormProps {
@@ -223,7 +223,7 @@ export const AddRecordForm: React.FC<AddRecordFormProps> = ({
                   </Label>
                   <Select
                     value={newAttachment.type}
-                    onValueChange={(value) =>
+                    onValueChange={(value : any) =>
                       setNewAttachment({
                         ...newAttachment,
                         type: value as MedicalAttachment["type"],
